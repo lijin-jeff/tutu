@@ -1,0 +1,210 @@
+<template>
+	<view class="page tn-safe-area-inset-bottom">
+		<tn-nav-bar fixed customBack :backgroundColor="mainColor">
+			<view slot="back" class='tn-custom-nav-bar__back'>
+				<text class='icon tn-icon-left'  @click="goBack"></text>
+				<text class='icon tn-icon-home-capsule-fill'  @click="goHome"></text>
+			</view>
+			<view class="tn-flex tn-flex-col-center tn-flex-row-center">
+				<text class="tn-text-bold tn-text-xl tn-color-white">在线题库</text>
+			</view>
+		</tn-nav-bar>
+		<view :style="{paddingTop: vuex_custom_bar_height + 'px'}">
+			<!-- 顶部搜索 -->
+			<view class="search-box" :style="{top: vuex_custom_bar_height + 'px'}">
+				<text class="tn-icon-menu fs-22" style="color: #8b9aae;" @click="showCategoryMenu = true"></text>
+				<view class="acea-row row-middle relative search-item">
+					<input type="text" placeholder-class="tn-icon-search plaClass" placeholder="搜索题库" class="input"
+						v-model="queryParams.title" confirm-type="search" @confirm="search" />
+					<view class="search-btn absolute" @click="search">搜索</view>
+				</view>
+			</view>
+			<view class="exam-ul">
+				<block v-for="(it, index) in questionList" :key="index">
+					<view class="tn-flex exam-li mt-10" @click="tl('/subpages/exam/questionContent?uid=' + it.uid)">
+						<view class="txt tn-flex tn-flex-direction-column">
+							<view class="fs-16 tn-text-ellipsis-2 news-title">{{it.title}}</view>
+							<view class="acea-row row-middle tn-color-gray">
+								<view>
+									<text class="tn-icon-bookmark"></text>
+									<text class="ml-5">{{it.cate_name}}</text>
+								</view>
+								<view class="tn-margin-left-sm">
+									<text class="tn-icon-time"></text>
+									<text class="ml-5">{{it.create_time}}</text>
+								</view>
+							</view>
+						</view>
+						<view class="" style="height: 100%;">
+							<view style="height: 100%;">
+								<image :src="it.image" class="pic"></image>
+							</view>
+						</view>
+					</view>
+				</block>
+			</view>
+			<!-- 资源列表为空开始 -->
+			<view :style="{paddingTop: vuex_custom_bar_height * 2 + 'px'}" v-if="questionList.length === 0">
+				<tn-empty mode="list" text="暂无题库"></tn-empty>
+			</view>
+			<!-- 资源列表为空结束 -->
+			<view class="tn-tabbar-height"></view>
+		</view>
+		<!-- 选择器 -->
+		<view class="">
+			<tn-select v-model="showCategoryMenu" :confirmColor="mainColor" valueName="value" labelName="label"
+				mode="multi-auto" :list="category" @confirm="categoryConfirm"></tn-select>
+		</view>
+	</view>
+</template>
+
+<script>
+	import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
+	export default {
+		name: 'pageB',
+		mixins: [template_page_mixin],
+		components: {},
+		data() {
+			return {
+				mainColor: getApp().globalData.mainColor,
+				queryParams: {
+					page_no: 1,
+					page_size: 20,
+					title: '',
+					cate_uid: '',
+				},
+				showCategoryMenu: false,
+				questionList: [],
+				category: [],
+			}
+		},
+		onLoad(option) {
+			// #ifdef MP-WEIXIN
+			this.$t.mpShare = {
+				share: true,
+			}
+			if (!this.$t.mpShare.share) {
+				uni.hideShareMenu()
+			}
+			// #endif
+			this.fetchtCategory()
+			this.fetchQuestionLibList()
+		},
+		methods: {
+			search() {
+				this.queryParams.page_no = 1
+				this.questionList = []
+				this.fetchQuestionLibList()
+			},
+			categoryConfirm(e) {
+				console.log(e)
+				if (e.length) this.queryParams.cate_uid = e[e.length - 1].value
+				this.search()
+			},
+			fetchtCategory() {
+				this.$api.apiQuestionCategoryTree().then((res) => {
+					this.category = res.data
+				})
+			},
+			fetchQuestionLibList() {
+				uni.showLoading({
+					title: '努力加载中'
+				})
+				this.$api.apiQuestionLib(this.queryParams).then(res => {
+					this.questionList.push(...res.data.lists)
+					this.queryParams.page_no += 1
+					uni.hideLoading()
+				})
+			},
+			tl(url) {
+				this.$func.navigatorTo(url)
+			}
+		},
+		onReachBottom() {
+			this.fetchQuestionLibList()
+		}
+	}
+</script>
+
+<style scoped lang="scss">
+	@import "@/scss/custom_nav_bar.scss";
+
+	/deep/ .plaClass {
+		color: #999;
+		text-align: start;
+	}
+
+	.news-title {
+		letter-spacing: 1rpx;
+		font-size: 30rpx;
+	}
+
+	.search-box {
+		// top: 0;
+		left: 0;
+		position: fixed;
+		z-index: 2;
+		width: 100vw;
+		background: #fff;
+		padding: 10rpx;
+		display: flex;
+		align-items: center;
+
+		.search-item {
+			width: 100%;
+
+			.input {
+				width: 100% !important;
+				padding-left: 30rpx;
+				padding-right: 150rpx;
+				margin-left: 10rpx;
+				height: 60rpx;
+				background: #f4f4f4;
+				border-radius: 40rpx;
+			}
+
+			.search-btn {
+				width: 100rpx;
+				height: 50rpx;
+				line-height: 50rpx;
+				text-align: center;
+				right: 10rpx;
+				font-size: 12px;
+				background: $view-theme;
+				color: #fff;
+				border-radius: 50rpx;
+			}
+		}
+
+	}
+
+	.exam-ul {
+		padding-top: 70rpx;
+		width: 98%;
+		margin-left: 1%;
+
+		.exam-li {
+			background: #fff;
+			border-radius: 10rpx;
+			padding: 20rpx;
+			// height: 240rpx;
+			position: relative;
+
+			.txt {
+				width: calc(100% - 200rpx);
+				justify-content: space-between;
+			}
+
+			.pic {
+				width: 200rpx;
+				height: 150rpx;
+				border-radius: 10rpx;
+			}
+		}
+
+	}
+
+	.fs-16 {
+		font-size: 30rpx;
+	}
+</style>

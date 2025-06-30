@@ -1,0 +1,105 @@
+{
+	"easycom": {
+		"^tn-(.*)": "@/tuniao-ui/components/tn-$1/tn-$1.vue"
+	},
+	"pages": [{
+		"path": "pages/index"
+	}],
+	"subPackages": [{
+		"root": "subpages/user", // 用户包
+		"pages": [{
+			"path": "set"
+		}, {
+			"path": "login"
+		}, {
+			"path": "scoreHistory"
+		}, {
+			"path": "member"
+		}]
+	}, { // 图文资讯
+		"root": "subpages/news",
+		"pages": [{
+			"path": "content"
+		}]
+	}, { // 资源包
+		"root": "subpages/resource",
+		"pages": [{
+			"path": "content"
+		}]
+	}, { // 课程包
+		"root": "subpages/course",
+		"pages": [{
+				"path": "list"
+			},
+			{
+				"path": "content"
+			},
+			{
+				"path": "detailArticle"
+			},
+			{
+				"path": "detailAudio"
+			},
+			{
+				"path": "detailVideo"
+			}
+		]
+	}, { // 通用包
+		"root": "subpages/common",
+		"pages": [{
+				"path": "update"
+			},
+			{
+				"path": "helpList"
+			},
+			{
+				"path": "helpContent"
+			},
+			{
+				"path": "serviceQrCode"
+			}
+		]
+	},{
+		"root": "subpages/order",
+		"pages": [
+			{
+				"path": "balanceRecharge" // 余额充值
+			},
+			{
+				"path": "orderList"// 订单列表
+			},
+			{
+				"path": "orderEvaluate"// 订单评价
+			}
+		]
+	}, { // 题库包
+		"root": "subpages/exam",
+		"pages": [{
+			"path": "questionlib" // 题库市场列表
+		}, {
+			"path": "questionContent" // 题库练习主页
+		}, {
+			"path": "questionOrder" // 顺序练习
+		}, {
+			"path": "questionChapter"// 试题章节
+		}, {
+			"path": "questionMnSetting"// 模拟考试设置
+		}, {
+			"path": "questionRank" // 练习排行
+		}, {
+			"path": "questionLibYear"// 历年真题
+		}, {
+			"path": "questionSearch"// 试题搜索
+		}, {
+			"path": "questionType"// 题型选择
+		}]
+	}],
+	"globalStyle": {
+		"navigationStyle": "custom",
+		"navigationBarTextStyle": "#ffffff",
+		"navigationBarTitleText": "兔兔找题",
+		"navigationBarBackgroundColor": "#05CA8D",
+		"backgroundColor": "#F8F8F8",
+		"pageOrientation": "auto"
+	}
+}
