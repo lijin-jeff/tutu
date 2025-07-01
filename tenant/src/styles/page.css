@@ -1,0 +1,88 @@
+.with100 {
+    width: 100%;
+}
+
+.width-100 {
+    width: 100px;
+}
+
+/*从左到右分布排列，垂直居中*/
+.display-flex-start-center {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.display-flex-between-center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.display-flex-right-center {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.display-flex-between-between {
+    display: flex;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+.padding-right20 {
+    padding-right: 20px;
+}
+
+.padding-left10 {
+    padding-left: 10px;
+}
+
+.padding-right10 {
+    padding-right: 10px;
+}
+
+.padding-left20 {
+    padding-left: 20px;
+}
+
+.margin-top10 {
+    margin-top: 10px;
+}
+
+.margin-top20 {
+    margin-top: 20px;
+}
+
+.margin-top30 {
+    margin-top: 30px;
+}
+
+.margin-left50 {
+    margin-left: 50px;
+}
+
+.margin-left20 {
+    margin-left: 20px;
+}
+
+.margin-left10 {
+    margin-left: 10px;
+}
+
+.margin-bottom10 {
+    margin-bottom: 10px;
+}
+
+.margin-bottom20 {
+    margin-bottom: 20px;
+}
+
+.margin-bottom30 {
+    margin-bottom: 30px;
+}
+
+.tl-text-center {
+    text-align: center;
+}
